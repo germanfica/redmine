@@ -5,7 +5,7 @@ services:
     networks:
       - redmine-network
     volumes:
-      - db-data:/var/lib/mysql
+      - redmine-db-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: redmine
@@ -39,7 +39,7 @@ services:
       - redmine-data:/usr/src/redmine/files
 
 volumes:
-  db-data:
+  redmine-db-data:
   redmine-data:
 
 networks:
