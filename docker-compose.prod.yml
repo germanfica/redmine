@@ -1,0 +1,45 @@
+# Este fichero asume un archivo .env con:
+# MYSQL_ROOT_PASSWORD, MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, REDMINE_SECRET_KEY_BASE
+services:
+  db:
+    image: mysql:8.4.6
+    restart: unless-stopped
+    networks:
+      - redmine-network
+    volumes:
+      - redmine-db-data:/var/lib/mysql
+    env_file: .env
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redmine:
+    image: redmine:6.0.6
+    restart: unless-stopped
+    networks:
+      - redmine-network
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${REDMINE_PORT:-3000}:3000"
+    env_file: .env
+    volumes:
+      - redmine-data:/usr/src/redmine/files
+    environment:
+      RAILS_ENV: production
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_DATABASE: "${MYSQL_DATABASE}"
+      REDMINE_DB_USERNAME: "${MYSQL_USER}"
+      REDMINE_DB_PASSWORD: "${MYSQL_PASSWORD}"
+      REDMINE_SECRET_KEY_BASE: "${REDMINE_SECRET_KEY_BASE}"
+
+volumes:
+  redmine-db-data:
+  redmine-data:
+
+networks:
+  redmine-network:
+    driver: bridge
