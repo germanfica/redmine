@@ -1,7 +1,7 @@
 # Este fichero asume un archivo .env con:
 # MYSQL_ROOT_PASSWORD, MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, REDMINE_SECRET_KEY_BASE
 services:
-  db:
+  redmine-db:
     image: mysql:8.4.6
     restart: unless-stopped
     networks:
@@ -21,7 +21,7 @@ services:
     networks:
       - net
     depends_on:
-      db:
+      redmine-db:
         condition: service_healthy
     ports:
       - "${REDMINE_PORT:-3000}:3000"
@@ -30,7 +30,7 @@ services:
       - redmine-data:/usr/src/redmine/files
     environment:
       RAILS_ENV: production
-      REDMINE_DB_MYSQL: db
+      REDMINE_DB_MYSQL: redmine-db
       REDMINE_DB_DATABASE: "${MYSQL_DATABASE}"
       REDMINE_DB_USERNAME: "${MYSQL_USER}"
       REDMINE_DB_PASSWORD: "${MYSQL_PASSWORD}"
