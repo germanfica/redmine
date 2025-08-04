@@ -26,6 +26,8 @@ services:
     depends_on:
       redmine-db:
         condition: service_healthy
+    ports:
+      - "3650:3000"
     environment:
       RAILS_ENV: production
       REDMINE_DB_MYSQL: redmine-db
