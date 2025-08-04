@@ -17,7 +17,7 @@ pipeline {
 
     environment {
         GITHUB_SSH_CREDENTIALS_ID = '4897bf31-98a8-4316-9226-fe957f467887' // Reemplaza con el ID de tus credenciales SSH de tipo Username with private key
-        SSH_KEY=credentials('adcc6d4c-e160-4bc5-ad33-6911e6fc152f') // Secret kind: SSH Username with private key
+        SSH_KEY=credentials('c1e2471b-7e6a-4db0-8d82-752af1c55525') // Secret kind: SSH Username with private key
         REPO_URL = 'https://github.com/germanfica/redmine.git'
         REPO_DIR = 'redmine' // Directorio del repositorio clonado
         PROJECT_NAME = 'redmine'
