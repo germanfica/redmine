@@ -3,7 +3,7 @@ services:
     image: mysql:8.4.6
     restart: unless-stopped
     networks:
-      - redmine-network
+      - net
     volumes:
       - redmine-db-data:/var/lib/mysql
     environment:
@@ -21,7 +21,7 @@ services:
     image: redmine:6.0.6
     restart: unless-stopped
     networks:
-      - redmine-network
+      - net
     ports:
       - "8080:3000"
     depends_on:
@@ -43,5 +43,6 @@ volumes:
   redmine-data:
 
 networks:
-  redmine-network:
+  net:
     driver: bridge
+    external: true
