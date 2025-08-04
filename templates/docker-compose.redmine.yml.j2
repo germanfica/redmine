@@ -20,9 +20,12 @@ services:
 
   {{ APP_NAME }}:
     image: {{ APP_IMAGE_NAME }}:{{ APP_VERSION }}
+    container_name: {{ APP_NAME }}
     restart: unless-stopped
     networks:
-      - net
+      net:
+        aliases:
+          - {{ APP_NAME }}
     depends_on:
       redmine-db:
         condition: service_healthy
