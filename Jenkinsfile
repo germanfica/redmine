@@ -23,7 +23,7 @@ pipeline {
         PROJECT_NAME = 'redmine'
         APP_IMAGE_NAME = 'redmine'
         APP_IMAGE_TAG = '6.0.6'
-        INVENTORY_PATH = '/opt/ansible-infra/inventories/production/applications/arqfica/inventory.yml'
+        INVENTORY_PATH = '/opt/ansible-infra/inventories/production/applications/redmine/inventory.yml'
         PLAYBOOK_PATH = '/opt/ansible-infra/playbooks/deploy-docker-app.yml'
         // Nota: WORKSPACE es una variable de Jenkins, no una variable de Groovy. No usar comillas simples en REDMINE_TEMPLATE_SRC porque Groovy no hace interpolación en ellas.
         REDMINE_TEMPLATE_SRC = "${WORKSPACE}/templates/docker-compose.redmine.yml.j2"
