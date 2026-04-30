@@ -1,0 +1,42 @@
+# docker-compose.adguardhome.yml.j2
+services:
+  {{ APP_NAME }}:
+    image: "{{ APP_IMAGE_NAME }}:{{ APP_VERSION }}"
+    container_name: {{ APP_NAME }}
+    restart: unless-stopped
+
+    expose:
+      - "3000/tcp"
+      - "53/tcp"
+      - "53/udp"
+
+    volumes:
+      - adguard-work:/opt/adguardhome/work
+      - adguard-conf:/opt/adguardhome/conf
+
+    networks:
+      net:
+        ipv4_address: {{ ADGUARD_WG_IPV4 }}
+        aliases:
+          - {{ APP_NAME }}
+          - adguardhome
+
+    security_opt:
+      - no-new-privileges:true
+
+    cap_add:
+      - NET_BIND_SERVICE
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  adguard-work:
+  adguard-conf:
+
+networks:
+  net:
+    external: true
