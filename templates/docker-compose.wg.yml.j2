@@ -1,7 +1,7 @@
 services:
-  wg-easy:
-    image: '{{ WG_APP_IMAGE_NAME }}:{{ WG_APP_IMAGE_TAG }}'
-    container_name: wg-easy
+  {{ APP_NAME }}:
+    image: '{{ APP_IMAGE_NAME }}:{{ APP_VERSION }}'
+    container_name: {{ APP_NAME }}
     restart: unless-stopped
 
     ports:

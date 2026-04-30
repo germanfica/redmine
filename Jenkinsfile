@@ -28,6 +28,7 @@ pipeline {
         // Nota: WORKSPACE es una variable de Jenkins, no una variable de Groovy. No usar comillas simples en REDMINE_TEMPLATE_SRC porque Groovy no hace interpolación en ellas.
         REDMINE_TEMPLATE_SRC = "${WORKSPACE}/templates/docker-compose.redmine.yml.j2"
         WG_TEMPLATE_SRC = "${WORKSPACE}/templates/docker-compose.wg.yml.j2"
+        WG_PROJECT_NAME = 'wg-easy'
         WG_APP_IMAGE_NAME = 'ghcr.io/wg-easy/wg-easy'
         WG_APP_IMAGE_TAG = 'latest'
         TARGET_HOSTS = 'redmine'
