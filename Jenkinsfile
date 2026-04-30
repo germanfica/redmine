@@ -30,7 +30,7 @@ pipeline {
         WG_TEMPLATE_SRC = "${WORKSPACE}/templates/docker-compose.wg.yml.j2"
         WG_PROJECT_NAME = 'wg-easy'
         WG_APP_IMAGE_NAME = 'ghcr.io/wg-easy/wg-easy'
-        WG_APP_IMAGE_TAG = 'latest'
+        WG_APP_IMAGE_TAG = '15.2.2'
         TARGET_HOSTS = 'redmine'
         LIMIT_HOSTS = 'redmine'
         USE_BECOME = 'true'
