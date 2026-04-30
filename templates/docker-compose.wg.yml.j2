@@ -13,9 +13,9 @@ services:
       - /lib/modules:/lib/modules:ro
 
     networks:
-      wg:
-        ipv4_address: 10.8.0.1
-        ipv6_address: fdcc:ad94:bacf:61a3::2a
+      #wg:
+      #  ipv4_address: 10.8.0.1
+      #  ipv6_address: fdcc:ad94:bacf:61a3::2a
       net:
 
     cap_add:
@@ -33,14 +33,14 @@ volumes:
   etc_wireguard:
 
 networks:
-  wg:
-    driver: bridge
-    enable_ipv6: true
-    ipam:
-      driver: default
-      config:
-        - subnet: 10.8.0.0/24
-        - subnet: fdcc:ad94:bacf:61a3::/64
+  #wg:
+  #  driver: bridge
+  #  enable_ipv6: true
+  #  ipam:
+  #    driver: default
+  #    config:
+  #      - subnet: 10.8.0.0/24
+  #      - subnet: fdcc:ad94:bacf:61a3::/64
 
   net:
     external: true
