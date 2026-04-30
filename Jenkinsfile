@@ -31,6 +31,12 @@ pipeline {
         WG_PROJECT_NAME = 'wg-easy'
         WG_APP_IMAGE_NAME = 'ghcr.io/wg-easy/wg-easy'
         WG_APP_IMAGE_TAG = '15.2.2'
+        // ADGUARD HOME
+        ADGUARD_TEMPLATE_SRC = "${WORKSPACE}/templates/docker-compose.adguardhome.yml.j2"
+        ADGUARD_PROJECT_NAME = 'adguardhome'
+        ADGUARD_APP_IMAGE_NAME = 'adguard/adguardhome'
+        ADGUARD_APP_IMAGE_TAG = 'v0.107.74'
+        // HOSTS
         TARGET_HOSTS = 'redmine'
         LIMIT_HOSTS = 'redmine'
         USE_BECOME = 'true'
@@ -105,6 +111,18 @@ pipeline {
                     withCredentials([file(credentialsId: 'ansible-vault-password', variable: 'VAULT_PASS_FILE')]) {
                         withEnv(["BUILD_TAG=${buildTag}"]) {
                             sh 'ansible-playbook -i $INVENTORY_PATH --private-key=$SSH_KEY --vault-password-file="$VAULT_PASS_FILE" $PLAYBOOK_PATH --limit $LIMIT_HOSTS --extra-vars "APP_VERSION=$WG_APP_IMAGE_TAG APP_IMAGE_NAME=$WG_APP_IMAGE_NAME APP_NAME=$WG_PROJECT_NAME WORKSPACE=$WORKSPACE TEMPLATE_SRC=$WG_TEMPLATE_SRC USE_TAR=false TARGET_HOSTS=$TARGET_HOSTS USE_BECOME=$USE_BECOME"'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy AdGuardHome App') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 'ansible-vault-password', variable: 'VAULT_PASS_FILE')]) {
+                        withEnv(["BUILD_TAG=${buildTag}"]) {
+                            sh 'ansible-playbook -i $INVENTORY_PATH --private-key=$SSH_KEY --vault-password-file="$VAULT_PASS_FILE" $PLAYBOOK_PATH --limit $LIMIT_HOSTS --extra-vars "APP_VERSION=$ADGUARD_APP_IMAGE_TAG APP_IMAGE_NAME=$ADGUARD_APP_IMAGE_NAME APP_NAME=$ADGUARD_PROJECT_NAME WORKSPACE=$WORKSPACE TEMPLATE_SRC=$ADGUARD_TEMPLATE_SRC USE_TAR=false TARGET_HOSTS=$TARGET_HOSTS USE_BECOME=$USE_BECOME"'
                         }
                     }
                 }
