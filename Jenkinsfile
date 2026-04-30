@@ -27,6 +27,9 @@ pipeline {
         PLAYBOOK_PATH = '/opt/ansible-infra/playbooks/deploy-docker-app.yml'
         // Nota: WORKSPACE es una variable de Jenkins, no una variable de Groovy. No usar comillas simples en REDMINE_TEMPLATE_SRC porque Groovy no hace interpolación en ellas.
         REDMINE_TEMPLATE_SRC = "${WORKSPACE}/templates/docker-compose.redmine.yml.j2"
+        WG_TEMPLATE_SRC = "${WORKSPACE}/templates/docker-compose.wg.yml.j2"
+        WG_APP_IMAGE_NAME = 'ghcr.io/wg-easy/wg-easy'
+        WG_APP_IMAGE_TAG = 'latest'
         TARGET_HOSTS = 'redmine'
         LIMIT_HOSTS = 'redmine'
         USE_BECOME = 'true'
@@ -92,6 +95,18 @@ pipeline {
                           gitTool: 'Default',
                           userRemoteConfigs: [[url: env.REPO_URL, credentialsId: env.GITHUB_SSH_CREDENTIALS_ID]]])
                 echo 'Checkout completed. Proceeding to the next stage.'
+            }
+        }
+
+        stage('Deploy wg-easy App') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 'ansible-vault-password', variable: 'VAULT_PASS_FILE')]) {
+                        withEnv(["BUILD_TAG=${buildTag}"]) {
+                            sh 'ansible-playbook -i $INVENTORY_PATH --private-key=$SSH_KEY --vault-password-file="$VAULT_PASS_FILE" $PLAYBOOK_PATH --limit $LIMIT_HOSTS --extra-vars "APP_VERSION=$WG_APP_IMAGE_TAG APP_IMAGE_NAME=$WG_APP_IMAGE_NAME APP_NAME=$WG_PROJECT_NAME WORKSPACE=$WORKSPACE TEMPLATE_SRC=$WG_TEMPLATE_SRC USE_TAR=false TARGET_HOSTS=$TARGET_HOSTS USE_BECOME=$USE_BECOME"'
+                        }
+                    }
+                }
             }
         }
 
