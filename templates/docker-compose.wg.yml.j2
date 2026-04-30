@@ -18,6 +18,7 @@ services:
       #  ipv4_address: 10.8.0.1
       #  ipv6_address: fdcc:ad94:bacf:61a3::2a
       net:
+        ipv4_address: {{ WG_EASY_NET_IPV4 }}
 
     cap_add:
       - NET_ADMIN
